@@ -21,6 +21,7 @@ BuildRequires:	perl-Test-Pod-Coverage
 Buildrequires:	perl-devel
 %endif
 Requires:	perl-Object-Accessor
+BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 
 %description
