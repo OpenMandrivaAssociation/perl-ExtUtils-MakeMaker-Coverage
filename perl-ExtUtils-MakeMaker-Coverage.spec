@@ -1,27 +1,27 @@
-%define module	ExtUtils-MakeMaker-Coverage
-%define name	perl-%{module}
-%define version 0.05
-%define release %mkrel 6
+%define upstream_name	 ExtUtils-MakeMaker-Coverage
+%define upstream_version 0.05
 
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:       perl-%{upstream_name}
+Version:    %perl_convert_version %{upstream_version}
+Release:    %mkrel 1
+
 Summary:	Add a Makefile target to determine test coverage using Devel::Cover
-License:	GPL or Artistic
+License:	GPL+ or Artistic
 Group:		Development/Perl
-Source:		http://search.cpan.org/CPAN/authors/id/S/SM/SMPETERS/%{module}-%{version}.tar.bz2
-Url:		http://search.cpan.org/dist/%{module}/
-BuildArch:	noarch
-Requires:	perl-Devel-Cover
+Url:		http://search.cpan.org/dist/%{upstream_name}/
+Source0:	http://search.cpan.org/CPAN/authors/id/S/SM/SMPETERS/%{upstream_name}-%{upstream_version}.tar.bz2
+
+%if %{mdkversion} < 1010
+Buildrequires:	perl-devel
+%endif
 BuildRequires:	perl-Devel-Cover
 BuildRequires:	perl-Object-Accessor
 BuildRequires:	perl-Test-Differences
 BuildRequires:	perl-Test-Pod-Coverage
-%if %{mdkversion} < 1010
-Buildrequires:	perl-devel
-%endif
+BuildArch:	noarch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}
+Requires:	perl-Devel-Cover
 Requires:	perl-Object-Accessor
-BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 
 %description
@@ -32,7 +32,7 @@ previous run. It then runs the tests, as if make test was run, then calls cover
 again to generate the coverage statistics.
 
 %prep
-%setup -q -n %{module}-%{version}
+%setup -q -n %{upstream_name}-%{upstream_version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
@@ -54,4 +54,3 @@ rm -rf %{buildroot}
 %{perl_vendorlib}/ExtUtils
 %{_mandir}/*/*
 %{_bindir}/*
-
