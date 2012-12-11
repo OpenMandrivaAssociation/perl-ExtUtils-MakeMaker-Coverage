@@ -1,9 +1,9 @@
 %define upstream_name	 ExtUtils-MakeMaker-Coverage
 %define upstream_version 0.05
 
-Name:       perl-%{upstream_name}
-Version:    %perl_convert_version %{upstream_version}
-Release:    %mkrel 1
+Name:		perl-%{upstream_name}
+Version:	%perl_convert_version %{upstream_version}
+Release:	2
 
 Summary:	Add a Makefile target to determine test coverage using Devel::Cover
 License:	GPL+ or Artistic
@@ -11,17 +11,14 @@ Group:		Development/Perl
 Url:		http://search.cpan.org/dist/%{upstream_name}/
 Source0:	http://search.cpan.org/CPAN/authors/id/S/SM/SMPETERS/%{upstream_name}-%{upstream_version}.tar.bz2
 
-%if %{mdkversion} < 1010
-Buildrequires:	perl-devel
-%endif
-BuildRequires:	perl-Devel-Cover
-BuildRequires:	perl-Object-Accessor
-BuildRequires:	perl-Test-Differences
-BuildRequires:	perl-Test-Pod-Coverage
+BuildRequires:	perl-devel
+BuildRequires:	perl(Devel::Cover)
+BuildRequires:	perl(Object::Accessor)
+BuildRequires:	perl(Test::Differences)
+BuildRequires:	perl(Test::Pod::Coverage)
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}
-Requires:	perl-Devel-Cover
-Requires:	perl-Object-Accessor
+Requires:	perl(Devel::Cover)
+Requires:	perl(Object::Accessor)
 
 
 %description
@@ -35,22 +32,57 @@ again to generate the coverage statistics.
 %setup -q -n %{upstream_name}-%{upstream_version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
+perl Makefile.PL INSTALLDIRS=vendor
 %make
 
 %check
-%{__make} test
+make test
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
-%clean 
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc Changes README
 %{perl_vendorlib}/ExtUtils
 %{_mandir}/*/*
 %{_bindir}/*
+
+
+%changelog
+* Wed Jul 29 2009 Jérôme Quelin <jquelin@mandriva.org> 0.50.0-1mdv2010.0
++ Revision: 403165
+- rebuild using %%perl_convert_version
+
+* Thu Jul 31 2008 Thierry Vignaud <tv@mandriva.org> 0.05-6mdv2009.0
++ Revision: 256846
+- rebuild
+
+* Thu Dec 20 2007 Olivier Blin <oblin@mandriva.com> 0.05-4mdv2008.1
++ Revision: 135841
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sat Sep 15 2007 Guillaume Rousse <guillomovitch@mandriva.org> 0.05-4mdv2008.0
++ Revision: 86373
+- rebuild
+
+
+* Thu Aug 31 2006 Guillaume Rousse <guillomovitch@mandriva.org> 0.05-3mdv2007.0
+- Rebuild
+
+* Sun Nov 06 2005 Guillaume Rousse <guillomovitch@mandriva.org> 0.05-2mdk
+- %%mkrel
+- requires perl-Object-Accessor
+
+* Mon Jul 18 2005 Guillaume Rousse <guillomovitch@mandriva.org> 0.05-1mdk 
+- new release
+- spec cleanup
+- better url
+- buildrequires
+- test in %%check
+
+* Fri Mar 04 2005 Guillaume Rousse <guillomovitch@mandrake.org> 0.02-1mdk 
+- first mdk release
+
